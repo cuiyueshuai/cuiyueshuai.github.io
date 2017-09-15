@@ -1,0 +1,998 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/VEN/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/VEN/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="微信小程序," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/uploads/images/favicon.png?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="微信小程序开发技术总结
+小程序开发技术介绍
+文件结构
+WXML和WXSS简单介绍
+app.json和page页面下的*.json简单配置
+
+
+小程序开发技术局限
+微信小程序原生架构局限
+微信小程序的发布代码包限制
+微信小程序页面层级限制
+微信小程序关于网络请求的限制
+
+
+小程序开发过程中填坑指南
+小程序租金计算器开发总结
+
+
+##小程序开发技术介绍
+###文件结构
+123456789101112+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序开发技术总结">
+<meta property="og:url" content="http://yoursite.com/2017/09/15/前端/微信小程序开发技术总结/index.html">
+<meta property="og:site_name" content="cuiyueshuai">
+<meta property="og:description" content="微信小程序开发技术总结
+小程序开发技术介绍
+文件结构
+WXML和WXSS简单介绍
+app.json和page页面下的*.json简单配置
+
+
+小程序开发技术局限
+微信小程序原生架构局限
+微信小程序的发布代码包限制
+微信小程序页面层级限制
+微信小程序关于网络请求的限制
+
+
+小程序开发过程中填坑指南
+小程序租金计算器开发总结
+
+
+##小程序开发技术介绍
+###文件结构
+123456789101112+">
+<meta property="og:updated_time" content="2017-09-15T09:16:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信小程序开发技术总结">
+<meta name="twitter:description" content="微信小程序开发技术总结
+小程序开发技术介绍
+文件结构
+WXML和WXSS简单介绍
+app.json和page页面下的*.json简单配置
+
+
+小程序开发技术局限
+微信小程序原生架构局限
+微信小程序的发布代码包限制
+微信小程序页面层级限制
+微信小程序关于网络请求的限制
+
+
+小程序开发过程中填坑指南
+小程序租金计算器开发总结
+
+
+##小程序开发技术介绍
+###文件结构
+123456789101112+">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'cuiyueshuai'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/15/前端/微信小程序开发技术总结/"/>
+
+
+
+
+
+  <title>微信小程序开发技术总结 | cuiyueshuai</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cuiyueshuai</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一半的微笑^_^</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/15/前端/微信小程序开发技术总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cuiyueshuai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cuiyueshuai">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">微信小程序开发技术总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-15T17:16:52+08:00">
+                2017-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/微信小程序/" itemprop="url" rel="index">
+                    <span itemprop="name">微信小程序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">阅读</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="微信小程序开发技术总结"><a href="#微信小程序开发技术总结" class="headerlink" title="微信小程序开发技术总结"></a>微信小程序开发技术总结</h1><ul>
+<li><a href="#H1">小程序开发技术介绍</a><ul>
+<li><a href="#H1-h1">文件结构</a></li>
+<li><a href="#H1-h2">WXML和WXSS简单介绍</a></li>
+<li><a href="#H1-h3">app.json和page页面下的*.json简单配置</a></li>
+</ul>
+</li>
+<li><a href="#H2">小程序开发技术局限</a><ul>
+<li><a href="#H2-h1">微信小程序原生架构局限</a></li>
+<li><a href="#H2-h2">微信小程序的发布代码包限制</a></li>
+<li><a href="#H2-h3">微信小程序页面层级限制</a></li>
+<li><a href="#H2-h4">微信小程序关于网络请求的限制</a></li>
+</ul>
+</li>
+<li><a href="#H3">小程序开发过程中填坑指南</a></li>
+<li><a href="#H4">小程序租金计算器开发总结</a></li>
+</ul>
+<hr>
+<p>##<span id="H1">小程序开发技术介绍</span></p>
+<p>###<span id="H1-h1">文件结构</span></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">+ images</div><div class="line">+ pages</div><div class="line">  + 以*为名字的文件夹</div><div class="line">    + *.js</div><div class="line">    + *.json</div><div class="line">    + *.wxml</div><div class="line">    + *.wxss</div><div class="line">+ util</div><div class="line">  + *.js</div><div class="line">+ app.js</div><div class="line">+ app.json</div><div class="line">+ app.wxss</div></pre></td></tr></table></figure>
+<p>小程序包含一个描述整体的app和多个描述各自的page，pages文件夹下面每一个文件夹即是一个页面的逻辑和页面实现；<br>一个小程序主体部分由三个文件组成，必须在项目根目录，如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">文件</th>
+<th style="text-align:center">必填</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">app.js</td>
+<td style="text-align:center">是</td>
+<td style="text-align:left">小程序逻辑</td>
+</tr>
+<tr>
+<td style="text-align:left">app.json</td>
+<td style="text-align:center">是</td>
+<td style="text-align:left">小程序公共设置</td>
+</tr>
+<tr>
+<td style="text-align:left">app.wxss</td>
+<td style="text-align:center">否</td>
+<td style="text-align:left">小程序公共样式表</td>
+</tr>
+</tbody>
+</table>
+<p>一个小程序页面由4个文件组成，分别是：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">文件类型</th>
+<th style="text-align:center">必填</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">*.js</td>
+<td style="text-align:center">是</td>
+<td style="text-align:left">页面逻辑</td>
+</tr>
+<tr>
+<td style="text-align:left">*.wxml</td>
+<td style="text-align:center">是</td>
+<td style="text-align:left">页面结构</td>
+</tr>
+<tr>
+<td style="text-align:left">*.wxss</td>
+<td style="text-align:center">否</td>
+<td style="text-align:left">页面样式表</td>
+</tr>
+<tr>
+<td style="text-align:left">*.json</td>
+<td style="text-align:center">否</td>
+<td style="text-align:left">页面配置</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意：为了方便开发者减少配置项，规定描述页面的四个文件具有相同的路径与文件名</strong> </p>
+<p>###<span id="H1-h2">WXML和WXSS简单介绍</span></p>
+<ul>
+<li><p><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/framework/view/wxml/" target="_blank" rel="external">WXML</a>（WeiXin Markup Language）是框架设计的一套标签语言，结合基础组件、事件系统、可以构建出页面结构;</p>
+<ul>
+<li><p>数据绑定</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!--wxml--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span> &#123;&#123;message&#125;&#125; <span class="tag">&lt;/<span class="name">view</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//page.js</span></div><div class="line">page(&#123;</div><div class="line">    <span class="attr">data</span>: &#123;</div><div class="line">        <span class="attr">message</span>: <span class="string">'Hello world'</span></div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+
+
+* 事件绑定
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!--wxml--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">bindtap</span>=<span class="string">"add"</span>&gt;</span> &#123;&#123;count&#125;&#125; <span class="tag">&lt;/<span class="name">view</span>&gt;</span></div></pre></td></tr></table></figure>
+
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//page.js</span></div><div class="line">Page(&#123;</div><div class="line">  <span class="attr">data</span>: &#123;</div><div class="line">    <span class="attr">count</span>: <span class="number">1</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">add</span>: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.setData(&#123;</div><div class="line">      <span class="attr">count</span>: <span class="keyword">this</span>.data.count + <span class="number">1</span></div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/framework/view/wxss.html" target="_blank" rel="external">WXSS</a> (WeiXin Style Sheets)是一套样式语言，用于描述WXML的组件样式。就类似web应用的css层叠样式表</p>
+<ul>
+<li><p>尺寸单位<br>  微信小程序除了可以使用css的单位px和相对位置百分比的方式，还使用了一种新的尺寸单位rpx，rpx（responsive pixel）： 可以根据宽度进行自适应，规定屏幕宽为750rpx; 如在iPhone6上，屏幕宽度为375px，共有750个物理像素，则750rpx=375px=750px，1rpx=0.5px=1物理像素。<br>  <strong>详细可参考blog：</strong><a href="http://www.cnblogs.com/babyzone2004/p/5979198.html" target="_blank" rel="external">微信小程序新单位rpx与自适应布局</a></p>
+</li>
+<li><p>样式导入</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">/** common.wxss **/</span></div><div class="line"><span class="selector-class">.small-p</span> &#123;</div><div class="line">  <span class="attribute">padding</span>:<span class="number">5px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/** app.wxss **/</span></div><div class="line">@<span class="keyword">import</span> <span class="string">"common.wxss"</span>;</div><div class="line"><span class="selector-class">.middle-p</span> &#123;</div><div class="line">  <span class="attribute">padding</span>:<span class="number">15px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>内联样式</p>
+<ul>
+<li><p>style: 静态的样式统一写到 class 中。style 接收动态的样式，在运行时会进行解析，请尽量避免将静态的样式写进 style 中，以免影响渲染速度。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">"color:&#123;&#123;color&#125;&#125;;"</span> /&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>* class: 用于指定样式规则，其属性值是样式规则中类选择器名(样式类名)的集合，样式类名不需要带上.，样式类名之间用空格分隔。
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">"color:&#123;&#123;color&#125;&#125;;"</span> /&gt;</span></div></pre></td></tr></table></figure>
+</code></pre><p>###<span id="H1-h3">app.json和page页面下的*.json简单配置</span></p>
+<ul>
+<li><p>app.json<br>  小程序使用<code>app.json</code>文件对微信小程序进行全局配置，决定页面文件对路径、窗口表现、设置网络超时时间、设置多tab等</p>
+<p>  | 属性 | 类型 | 必填 | 描述 |<br>  | :—– | :—–: | :—–: | :—– |<br>  | pages | String Array | 是 | 设置页面路径 |<br>  | window | Object | 否 | 设置默认页面的窗口表现 |<br>  | tabBar | Object | 否 | 设置底部tab的表现 |<br>  | networkTimeout | Object | 否 | 设置网络超时间 |<br>  | debug | Object | 否 | 设置是否开启debug模式 |</p>
+</li>
+<li><p>pages.json</p>
+<p>  每一个小程序页面也可以使用.json文件来对本页面的窗口表现进行配置。 页面的配置比app.json全局配置简单得多，只是设置 app.json 中的 window 配置项的内容，页面中配置项会覆盖 app.json 的 window 中相同的配置项。</p>
+<p>  页面的.json只能设置 window 相关的配置项，以决定本页面的窗口表现，所以无需写 window 这个键。</p>
+<p>  | 属性 | 类型 | 默认值 | 描述 |<br>  | :—– | :—–: | :—–: | :—– |<br>  | navigationBarBackgroundColor | HexColor | #000000 | 导航栏背景颜色，如”#000000” |<br>  | navigationBarTextStyle | String | white | 导航栏标题颜色，仅支持 black/white |<br>  | navigationBarTitleText | String | 1 | 导航栏标题文字内容 |<br>  | backgroundColor | HexColor | #ffffff | 窗口的背景色 |<br>  | backgroundTextStyle | String | dark | 下拉背景字体、loading 图的样式，仅支持 dark/light |<br>  | enablePullDownRefresh | Boolean | false | 是否开启下拉刷新 |<br>  | disableScroll | Boolean | false | 设置为 true 则页面整体不能上下滚动；只在 page.json 中有效，无法在 app.json 中设置该项 |</p>
+</li>
+</ul>
+<p><strong>备注：</strong> 详细的配置请参考官方<a href="https://mp.weixin.qq.com/debug/wxadoc/dev/framework/config.html" target="_blank" rel="external">API</a>;</p>
+<p>##<span id="H2">小程序开发技术局限性和注意点</span></p>
+<p>###<span id="H2-h1">微信小程序原生架构局限</span><br>微信小程序原生架构局限模块化，数据管理，复用性等皆较差，在此基础上直接开发，效率和代码规范性，模块化等问题突出，因而可以考虑集成一些开发的基础骨架和框架，类似webapp般的开发。现阶段Github上面已经有一部分优秀的骨架框架和集成redux管理开发数据等不错的框架，本次开发租金计算器，未集成任何开发工具和开发骨架，在开发流程上有些许不足和限制，接下来会考虑加入开发基础骨架和redux框架集成，让开发微信小程序流程接近web级开发流程。<br><strong>框架推荐：</strong><a href="https://github.com/cuiyueshuai/weapp-boilerplate" target="_blank" rel="external">weapp-boilerplate</a>;<a href="https://github.com/cuiyueshuai/wxapp-redux-starter" target="_blank" rel="external">wxapp-redux-starter</a>;</p>
+<p>###<span id="H2-h2">微信小程序的发布代码包限制</span><br>微信官方限制小程序的发布代码不能超过 1MB，因而在此处有两点要注意：<br>一、集成开发框架时，编译输出要上传的代码到dist文件夹，且不可以超出1MB；<br>二、际开发过程中，一般的小程序难免会有图片等富媒体文件，而这些富媒体文件会占用大量的存储空间；<br>关于第二点，一般项目不会遇到，这里提供了一种结合七牛服务提出了解决方案，可解决类似问题作为参考：<a href="http://www.jcodecraeer.com/a/qianduankaifa/2017/0123/7088.html" target="_blank" rel="external">突破微信小程序存储限制的技巧与方法详解</a></p>
+<p>###<span id="H2-h3">微信小程序页面层级限制</span><br>微信小程序官方限制页面使用类似router栈级结构层级不可以超过5层，因而页面间逻辑不可以过于复杂，在此基础上，开发者可以从页面逻辑设计、wx.redirectTo等API问题上尽量优化以求得规避该限制带来的最小影响。</p>
+<p>###<span id="H2-h4">微信小程序关于网络请求的限制</span><br>微信小程序开发过程中未有appid时，网络请求未经过检验，基本不存在限制，只是简单的请求和响应，但是绑定appid和发布时，切记网络请求域名要在微信公众平台绑定，且域名使用https协议和后台需要 Nginx 配置 HTTPS 的加密标准为 TLS 1.2 及以上。</p>
+<p>##<span id="H3">小程序开发过程中填坑指南</span></p>
+<ul>
+<li><p>列表渲染问题<br>  微信小程序渲染列表方式：</p>
+<pre><code><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;array&#125;&#125;"</span> <span class="attr">wx:for-index</span>=<span class="string">"idx"</span> <span class="attr">wx:for-item</span>=<span class="string">"itemName"</span>&gt;</span></div><div class="line">    &#123;&#123;idx&#125;&#125;: &#123;&#123;itemName.message&#125;&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></div></pre></td></tr></table></figure>
+</code></pre></li>
+</ul>
+<pre><code>在列表界面和数据实现双向绑定时，切记绑定wx：key属性，否则会出现数据和界面无法对应问题，关于wx：key 属性和多层嵌套列表参考[列表渲染多层嵌套循环及wx:key的使用--微信小程序入门教程](http://lanchenglv.com/article/2016/1124/wxapp_list_foreach.html)
+</code></pre><ul>
+<li><p>关于input的type属性<br>  建议设置该属性，且设置后赋值一定要正确，特别是该页面下多个input，否则可能引起真机下该input无法聚焦输入</p>
+</li>
+<li><p>关于网络请求状态&gt;400处理<br>  微信小程序网络请求对400以上的状态码会当做请求成功处理，也因此微信小程序对于客户端session会话验证方式采用了一套自己的方式，关于微信session会话参考官方<a href="https://mp.weixin.qq.com/debug/wxadoc/dev/api/api-login.html#wxloginobject" target="_blank" rel="external">API</a>, 这里建议在请求封装函数里面做一个对status&gt;=400的特别处理以解决问题</p>
+</li>
+<li><p>小程序页面间数据传递和更新上一页面数据<br>  小程序页面间数据传递使用的是类似网络GET请求般传递参数，非常不方便，这里建议重新封装一个自己的跳转工具类，参考<a href="http://www.acfunc.com/小程序踩坑记-长按与点击事件冲突/" target="_blank" rel="external">小程序踩坑记《三》复杂数据的传递</a>, 还有另外一种方法，在传递数据时，强转对象为字符串，再新页面使用JSON.parse()转回对象；</p>
+</li>
+<li><p>关于小程序事件冒泡<br>  小程序点击事件有和web开发类似的冒泡机制，这里可以去看<a href="https://mp.weixin.qq.com/debug/wxadoc/dev/framework/view/wxml/event.html" target="_blank" rel="external">官方文档</a>关于catchbind和bind的不同点, 以及关于事件参数target和currentTarget的区别，良好使用这些参数，可以更加灵活的使用小程序的事件冒泡机制。</p>
+</li>
+<li><p>关于小程序长按事件、双击事件等和单击事件的冲突<br>  微信小程序事件触发顺序:<br>  单击    touchstart → touchend → tap<br>  双击    touchstart → touchend → tap → touchstart → touchend → tap<br>  长按    touchstart → longtap → touchend → tap<br>  为了解决这个冲突，这里提供良好的解决方案解决问题，可看代码：</p>
+  <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// wxml</div><div class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">bindtouchstart</span>=<span class="string">"bindTouchStart"</span> <span class="attr">bindtouchend</span>=<span class="string">"bindTouchEnd"</span> <span class="attr">bindtap</span>=<span class="string">"bindTap"</span>&gt;</span>蹂躏我<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// js</span></div><div class="line">bindTouchStart: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">   <span class="keyword">this</span>.startTime = e.timeStamp;</div><div class="line">&#125;</div><div class="line">bindTouchEnd: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.endTime = e.timeStamp;</div><div class="line">&#125;</div><div class="line">bindTap: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.endTime - <span class="keyword">this</span>.startTime &gt; <span class="number">350</span>) &#123;</div><div class="line">       <span class="built_in">console</span>.log(<span class="string">"长按"</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">       <span class="built_in">console</span>.log(<span class="string">"点击"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+
+**更多问题请进入：** [微信小程序官网论坛](http://developers.weixin.qq.com)
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微信小程序/" rel="tag"># 微信小程序</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/15/前端/数据流架构学习(一)-Flux/" rel="next" title="数据流架构学习笔记(一)-Flux">
+                <i class="fa fa-chevron-left"></i> 数据流架构学习笔记(一)-Flux
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/images/avatar.png"
+               alt="cuiyueshuai" />
+          <p class="site-author-name" itemprop="name">cuiyueshuai</p>
+           
+              <p class="site-description motion-element" itemprop="description">Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cuiyueshuai" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.jianshu.com/u/b6f3198064f5" title="乐帅的简书" target="_blank">乐帅的简书</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#微信小程序开发技术总结"><span class="nav-number">1.</span> <span class="nav-text">微信小程序开发技术总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cuiyueshuai</span>
+</div>
+
+
+<div class="powered-by">
+
+</div>
+
+<div class="theme-info">
+  一个人静静的写文章，静静的改变
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/VEN/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/VEN/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/VEN/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/VEN/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/VEN/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/VEN/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

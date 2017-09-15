@@ -1,0 +1,824 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/VEN/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/VEN/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="React Native, 前端," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/uploads/images/favicon.png?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="数据流架构学习笔记(一)-Flux由iOS原生开发转到React Native开发，再接着慢慢开始学习前端开发，真心觉得搞技术太难了这句话太正确了。当前正在开发的项目中使用了Vue+Vuex+Electron来实现桌面应用开发，在学习了Vuex之后，决定对之前学的各种数据流管理架构做一个系统的总结，所以接下来我还会有数据流架构学习笔记(二)-Redux数据流架构学习笔记(三)-Vuex数据流架构学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据流架构学习笔记(一)-Flux">
+<meta property="og:url" content="http://yoursite.com/2017/09/15/前端/数据流架构学习(一)-Flux/index.html">
+<meta property="og:site_name" content="cuiyueshuai">
+<meta property="og:description" content="数据流架构学习笔记(一)-Flux由iOS原生开发转到React Native开发，再接着慢慢开始学习前端开发，真心觉得搞技术太难了这句话太正确了。当前正在开发的项目中使用了Vue+Vuex+Electron来实现桌面应用开发，在学习了Vuex之后，决定对之前学的各种数据流管理架构做一个系统的总结，所以接下来我还会有数据流架构学习笔记(二)-Redux数据流架构学习笔记(三)-Vuex数据流架构学">
+<meta property="og:image" content="https://github.com/cuiyueshuai/MD-Image-Repository/raw/master/flux-overview.png">
+<meta property="og:image" content="https://github.com/cuiyueshuai/MD-Image-Repository/raw/master/flux-instance-loop.png">
+<meta property="og:updated_time" content="2017-09-15T09:15:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据流架构学习笔记(一)-Flux">
+<meta name="twitter:description" content="数据流架构学习笔记(一)-Flux由iOS原生开发转到React Native开发，再接着慢慢开始学习前端开发，真心觉得搞技术太难了这句话太正确了。当前正在开发的项目中使用了Vue+Vuex+Electron来实现桌面应用开发，在学习了Vuex之后，决定对之前学的各种数据流管理架构做一个系统的总结，所以接下来我还会有数据流架构学习笔记(二)-Redux数据流架构学习笔记(三)-Vuex数据流架构学">
+<meta name="twitter:image" content="https://github.com/cuiyueshuai/MD-Image-Repository/raw/master/flux-overview.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'cuiyueshuai'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/15/前端/数据流架构学习(一)-Flux/"/>
+
+
+
+
+
+  <title>数据流架构学习笔记(一)-Flux | cuiyueshuai</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cuiyueshuai</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一半的微笑^_^</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/15/前端/数据流架构学习(一)-Flux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cuiyueshuai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cuiyueshuai">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据流架构学习笔记(一)-Flux</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-15T17:15:04+08:00">
+                2017-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端-React-Native/" itemprop="url" rel="index">
+                    <span itemprop="name">前端, React Native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">阅读</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数据流架构学习笔记-一-Flux"><a href="#数据流架构学习笔记-一-Flux" class="headerlink" title="数据流架构学习笔记(一)-Flux"></a>数据流架构学习笔记(一)-Flux</h1><p>由iOS原生开发转到React Native开发，再接着慢慢开始学习前端开发，真心觉得搞技术太难了这句话太正确了。当前正在开发的项目中使用了Vue+Vuex+Electron来实现桌面应用开发，在学习了Vuex之后，决定对之前学的各种数据流管理架构做一个系统的总结，所以接下来我还会有<br>数据流架构学习笔记(二)-Redux<br>数据流架构学习笔记(三)-Vuex<br>数据流架构学习笔记(一)-Flux 是这次系统总结的第一篇笔记，都是一些自己的学习和总结，权当学习参考。</p>
+<p>##Flux是什么？<br>Flux是Facebook官方提出一种架构思想，他的出现同样也是为了解决实际项目中软件结构的问题，如果你了解过MVC，MVVM之类的东西，其实就应该知道这是一样的东西，他们是一种思想，为了让你的应用能够更加合理的工作和运行，具体到如何应用在你的项目中，通过代码和一些工具可以仁者见仁、智者见智的使用。</p>
+<p>##Flux如何工作<br>一个 Flux 应用主要包含四个部分：</p>
+<ul>
+<li><code>the dispatcher</code>: 处理动作分发，并且向注册的回调函数广播payloads，维护 Store 之间的依赖关系</li>
+<li><code>the stores</code>: 应用程序状态的容器，并且含有注册到Dispatcher的回调函数，数据和逻辑部分</li>
+<li><code>the views</code>: 视图组件，这一层可以看作controller-views，作为视图同时响应用户交互</li>
+<li><code>the actions</code>: 提供通过具体行为使用dispatcher 传递数据给 store，是一些使用Dispatcher传递数据的具体方法集合</li>
+</ul>
+<p>Flux 的核心<code>单向数据流</code>是这样运作的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Action -&gt; Dispatcher -&gt; Store -&gt; View</div></pre></td></tr></table></figure>
+<p>更多时候 View 会通过用户交互触发 Action，所以一个简单完整的数据流类似这样：</p>
+<p><img src="https://github.com/cuiyueshuai/MD-Image-Repository/raw/master/flux-overview.png" alt=""></p>
+<p>假设现在在项目中，Action模块、Stroe模块、View模块等都已建立成功，Dispatcher来自官方Flux库，以从页面登录的例子进行一次Flux流程说明，流程如下：</p>
+<ol>
+<li>页面点击登录按钮，View触发点击动作，调用Action中的网络请求封装函数；</li>
+<li>Action调用网络库相关API，并成功返回用户登录成功参数，或返回失败错误。</li>
+<li>在成功返回的callback中通过Dispatcher分发用户信息Payload至Store更改数据并存储新数据中。</li>
+<li>store通过前期已注册的对应通知及emit()将最新的数据分发出去，页面监听到数据变化，从而更新页面数据，重新渲染页面。</li>
+</ol>
+<p>##实例应用</p>
+<p>因为工作偏向React Native，这里以登录流程中部分React Native代码展示如何将Flux应用到React Native开发中进行数据管理,（由于代码时间较久，存在一些不合理之处请忽略，但不影响Flux数据流的理解）：</p>
+<p><img src="https://github.com/cuiyueshuai/MD-Image-Repository/raw/master/flux-instance-loop.png" alt=""></p>
+<p>###视图层View：</p>
+<p>登录页：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">_login(userName, passWord) &#123;</div><div class="line">        LoginActions.login(&#123;</div><div class="line">            <span class="attr">username</span>: userName,</div><div class="line">            <span class="attr">password</span>: passWord,</div><div class="line">            ...</div><div class="line">        &#125;, (response) =&gt; &#123;</div><div class="line">            <span class="keyword">this</span>.props.navigator.resetTo(&#123;<span class="attr">comp</span>:MainContainer&#125;);</div><div class="line">        &#125;, (error) =&gt; &#123;</div><div class="line">            Alert.alert(</div><div class="line">                <span class="string">'提示'</span>,</div><div class="line">                <span class="string">'error'</span>,</div><div class="line">                [&#123; <span class="attr">text</span>: <span class="string">'确定'</span> &#125;]</div><div class="line">            );</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>主页：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span>  <span class="title">Main</span> <span class="keyword">extends</span> <span class="title">Component</span></span>&#123;</div><div class="line">    <span class="keyword">constructor</span>(props)&#123;</div><div class="line">        <span class="keyword">super</span>(props);</div><div class="line">        <span class="keyword">this</span>.state = &#123;</div><div class="line">            <span class="attr">user</span>: AppStore.getUser(),</div><div class="line">            ...</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">    componentDidMount() &#123;</div><div class="line">       AppStore.addChangeListener(<span class="keyword">this</span>._userStateChange, <span class="string">'USER_CHANGE'</span>);</div><div class="line">    &#125;</div><div class="line">    componentWillUnmount() &#123;</div><div class="line">       AppStore.removeChangeListener(<span class="keyword">this</span>._userStateChange, <span class="string">'USER_CHANGE'</span>);</div><div class="line">    &#125;</div><div class="line">    _onChange: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">this</span>.setState(&#123;</div><div class="line">            <span class="attr">user</span>: AppStore.getUser()</div><div class="line">        &#125;);</div><div class="line">    &#125;,</div><div class="line">    ...</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>登录页是你的点击交互事件，你通过点击触发登录调用Action，主页Main会存在登录后返回的用户信息，数据来源于你的数据仓库AppStore，页面当然还存在页面监听者，知道当你的数据改变的时候，知道该如何去更新你的页面。</p>
+<p>###行为Action：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">const _login = <span class="function">(<span class="params">params, callback, failure</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">const</span> requestUrl = CommonLink.login(params.username, params.password);</div><div class="line">   <span class="keyword">return</span> Fetcher.getFetch(requestUrl)</div><div class="line">       .then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">           AppDispatcher.dispatch(&#123;</div><div class="line">               <span class="attr">actionType</span>: AppConstants.LOGIN,</div><div class="line">               <span class="attr">data</span>: response.body,</div><div class="line">           &#125;);</div><div class="line">           callback(response);</div><div class="line">       &#125;).catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</div><div class="line">           failure(error);</div><div class="line">       &#125;);</div><div class="line">&#125;;</div><div class="line">...</div><div class="line">module.exports = &#123;</div><div class="line">    <span class="attr">login</span>: <span class="function">(<span class="params">params, callback, failure</span>) =&gt;</span> _login(params, callback, failure),</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>触发一个行为调用Action方法进行了网络API的调用，进行登录，并返回成功用户信息后，通过Dispatcher将数据和消息分发出去，把接下来的工作交给数据仓库Store。</p>
+<p>###数据仓库Stores：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">const</span> dataStore = &#123;</div><div class="line">    <span class="attr">user</span>: &#123;&#125;,</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> AppStore = _.assign(&#123;&#125;, EventEmitter.prototype, EventEmitter.prototype._maxListeners = <span class="number">30</span>, &#123;</div><div class="line">  emitChange(event = <span class="string">'DEFAULT_EVENT'</span>) &#123;</div><div class="line">    <span class="keyword">this</span>.emit(event);</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  addChangeListener(callback, event = <span class="string">'DEFAULT_EVENT'</span>) &#123;</div><div class="line">    <span class="keyword">this</span>.on(event, callback);</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  removeChangeListener(callback, event = <span class="string">'DEFAULT_EVENT'</span>) &#123;</div><div class="line">    <span class="keyword">this</span>.removeListener(event, callback);</div><div class="line">  &#125;,</div><div class="line">  ...</div><div class="line">  getUser: <span class="function"><span class="params">()</span> =&gt;</span> dataStore.user || &#123;&#125;,</div><div class="line">  ...</div><div class="line">&#125;);</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line"><span class="comment">// Register callback to handle all updates</span></div><div class="line">AppDispatcher.register(<span class="function">(<span class="params">action</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">switch</span> (action.actionType) &#123;</div><div class="line">    ...</div><div class="line">    case AppConstants.LOGIN:</div><div class="line">      _.assign(dataStore, &#123;</div><div class="line">        <span class="attr">username</span>: action.data.user.username,</div><div class="line">        ...</div><div class="line">      &#125;);</div><div class="line">      AppStore.emitChange(<span class="string">'USER_CHANGE'</span>);</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    ...</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = AppStore;</div></pre></td></tr></table></figure>
+<p>在数据仓库中，你应该定义出仓库对象AppStore，并对AppDispatcher注册入各种操作，即当接收到AppDispatcher发来的不同消息时，操作数据并保存数据到dataStore中，之后通过AppStore.emit()将更新通知发送到页面中，让页面进行重新渲染。从而完成整个Flux数据流的闭环。</p>
+<p>###关于AppDispatcher和AppConstants<br>上述代码中用到的AppDispatcher和AppConstants代码如下：<br>AppDispatcher：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import &#123;Dispatcher&#125; from &apos;flux&apos;</div><div class="line">module.exports = new Dispatcher();</div></pre></td></tr></table></figure>
+<p>AppConstants:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">const keyMirror = require(&apos;keymirror&apos;);</div><div class="line"></div><div class="line">const AppConstants = keyMirror(&#123;</div><div class="line">  ...</div><div class="line">  LOGIN: null,</div><div class="line">  ...</div><div class="line">&#125;);</div><div class="line">module.exports = AppConstants;</div></pre></td></tr></table></figure>
+<p>可以看出这些只是为了更好的使用Flux而引入库和辅助工具，你也可以使用其他类似工具。</p>
+<p>##总结<br>Flux学习和理解需要的是在项目中实际应用进去，同样只要理解了单向数据流的思想，理解Flux也是很快的，Flux是单向数据流的一种具体架构实现。接下来会再总结关于Redux的理解和使用，同样也是单向数据流的一种具体实现，基于Flux，但是比Flux更加方便和强大。而当前的很多React开发项目也都基于使用Redux。</p>
+<p>虽然搞技术很难，但是做自己喜欢的事情还是很开心的，一起学习，努力奋斗。</p>
+<p>##参考博客：</p>
+<p><a href="http://www.ruanyifeng.com/blog/2016/01/flux.html" target="_blank" rel="external">Flux 架构入门教程-阮一峰</a><br><a href="http://www.csdn.net/article/2015-08-31/2825587-react-flux" target="_blank" rel="external">详解React Flux架构工作方式</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React-Native-前端/" rel="tag"># React Native, 前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/04/React Native/React Native可伸展列表封装与实现方案/" rel="next" title="React Native可伸缩列表封装与快速实现方案">
+                <i class="fa fa-chevron-left"></i> React Native可伸缩列表封装与快速实现方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/15/前端/微信小程序开发技术总结/" rel="prev" title="微信小程序开发技术总结">
+                微信小程序开发技术总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/images/avatar.png"
+               alt="cuiyueshuai" />
+          <p class="site-author-name" itemprop="name">cuiyueshuai</p>
+           
+              <p class="site-description motion-element" itemprop="description">Blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cuiyueshuai" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.jianshu.com/u/b6f3198064f5" title="乐帅的简书" target="_blank">乐帅的简书</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据流架构学习笔记-一-Flux"><span class="nav-number">1.</span> <span class="nav-text">数据流架构学习笔记(一)-Flux</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cuiyueshuai</span>
+</div>
+
+
+<div class="powered-by">
+
+</div>
+
+<div class="theme-info">
+  一个人静静的写文章，静静的改变
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/VEN/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/VEN/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/VEN/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/VEN/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/VEN/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/VEN/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
